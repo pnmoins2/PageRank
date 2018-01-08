@@ -24,63 +24,63 @@ public class InitialVectorBuilding extends Configured implements Tool {
 		this.conf = conf;
 	}
 	
-    public int run(String[] args) throws Exception {
-    	if (args.length != 2) {
+    	public int run(String[] args) throws Exception {
+		if (args.length != 2) {
 
-            System.out.println("Usage: [input] [output]");
+		    System.out.println("Usage: [input] [output]");
 
-            System.exit(-1);
+		    System.exit(-1);
 
-        }
+		}
     	
-        // Création d'un job en lui fournissant la configuration et une description textuelle de la tâche
+		// Création d'un job en lui fournissant la configuration et une description textuelle de la tâche
 
-        Job job = Job.getInstance(conf);
+		Job job = Job.getInstance(conf);
 
-        job.setJobName("InitialVectorBuilder");
-        
-        // On précise le format des fichiers d'entrée et de sortie
-        
-        job.setInputFormatClass(KeyValueTextInputFormat.class);
-		job.setOutputFormatClass(TextOutputFormat.class);
+		job.setJobName("InitialVectorBuilder");
 
-        // On précise les classes MyProgram, Map et Reduce
+		// On précise le format des fichiers d'entrée et de sortie
 
-        job.setJarByClass(InitialVectorBuilding.class);
+		job.setInputFormatClass(KeyValueTextInputFormat.class);
+			job.setOutputFormatClass(TextOutputFormat.class);
 
-        job.setMapperClass(InitialVectorBuildingMapper.class);
+		// On précise les classes MyProgram, Map et Reduce
 
-        job.setReducerClass(InitialVectorBuildingReducer.class);
+		job.setJarByClass(InitialVectorBuilding.class);
 
-        // Définition des types clé/valeur de notre problème
+		job.setMapperClass(InitialVectorBuildingMapper.class);
 
-        job.setMapOutputKeyClass(Text.class);
+		job.setReducerClass(InitialVectorBuildingReducer.class);
 
-        job.setMapOutputValueClass(IntWritable.class);
+		// Définition des types clé/valeur de notre problème
 
+		job.setMapOutputKeyClass(Text.class);
 
-        job.setOutputKeyClass(IntWritable.class);
-
-        job.setOutputValueClass(FloatWritable.class);
+		job.setMapOutputValueClass(IntWritable.class);
 
 
-        // Définition des fichiers d'entrée et de sorties (ici considérés comme des arguments à préciser lors de l'exécution)
+		job.setOutputKeyClass(IntWritable.class);
 
-        Path inputFilePath = new Path(args[0]);
-    	FileInputFormat.addInputPath(job, inputFilePath);
-    	
-        Path outputFilePath = new Path(args[1]);
-        FileOutputFormat.setOutputPath(job, outputFilePath);
+		job.setOutputValueClass(FloatWritable.class);
 
-        //Suppression du fichier de sortie s'il existe déjà
 
-        FileSystem fs = FileSystem.newInstance(conf);
+		// Définition des fichiers d'entrée et de sorties (ici considérés comme des arguments à préciser lors de l'exécution)
 
-        if (fs.exists(outputFilePath)) {
-            fs.delete(outputFilePath, true);
-        }
-        
-        return job.waitForCompletion(true) ? 0: 1;
+		Path inputFilePath = new Path(args[0]);
+		FileInputFormat.addInputPath(job, inputFilePath);
 
-    }
+		Path outputFilePath = new Path(args[1]);
+		FileOutputFormat.setOutputPath(job, outputFilePath);
+
+		//Suppression du fichier de sortie s'il existe déjà
+
+		FileSystem fs = FileSystem.newInstance(conf);
+
+		if (fs.exists(outputFilePath)) {
+		    fs.delete(outputFilePath, true);
+		}
+
+		return job.waitForCompletion(true) ? 0: 1;
+
+    	}
 }
