@@ -22,7 +22,7 @@ public class PageRankMapper extends Mapper<Text, Text, IntWritable, FloatWritabl
 	private Map<Integer, Float> vector = new HashMap<Integer,Float>();
 	
 	@Override
-    protected void setup(Context context) throws IOException, InterruptedException {
+    	protected void setup(Context context) throws IOException, InterruptedException {
 		dampingFactor = context.getConfiguration().getFloat("dampingFactor", new Float("0.85"));
 		numberOfNodes = context.getConfiguration().getInt("numberOfNodes", 75879);
 		
@@ -61,38 +61,38 @@ public class PageRankMapper extends Mapper<Text, Text, IntWritable, FloatWritabl
 				fs.close();
 			}
 		}
-    }
+    	}
 	
 	// Overriding of the map method
 	@Override
 	protected void map(Text keyE, Text valE, Context context) throws IOException,InterruptedException
-    {	
+    	{	
 		// Recover the index
-        String inputIndex = keyE.toString();
-        
-        // Split the index
-        String[] inputIndexSplit = inputIndex.split(",");
-        
-        // Recover the column index
-	    index.set(Integer.parseInt(inputIndexSplit[1]));
-	    
-        // Recover the matrix coefficient
-	    Float matrixCoefficient = Float.parseFloat(valE.toString());
-	    
-	    // Recover the vector coefficient linked to the matrix coefficient, 
-	    // if it's not defined, then we didn't compute it in the previous iteration
-	    // then all the matrix coefficient in the corresponding column are 0
-	    // So the vector coefficient should be (1 - dampingFactor) / numberOfNodes
-	    if (vector.containsKey(Integer.parseInt(inputIndexSplit[0])))
-        {
-	    	coefficient.set(matrixCoefficient * vector.get(Integer.parseInt(inputIndexSplit[0])));	
-        }
-	    else
-	    {
-	    	coefficient.set(matrixCoefficient * (1 - dampingFactor)/numberOfNodes);
-	    }
-	    
-	    // Output
-	    context.write(index, coefficient);
-    }
+		String inputIndex = keyE.toString();
+
+		// Split the index
+		String[] inputIndexSplit = inputIndex.split(",");
+
+		// Recover the column index
+		index.set(Integer.parseInt(inputIndexSplit[1]));
+
+		// Recover the matrix coefficient
+		Float matrixCoefficient = Float.parseFloat(valE.toString());
+
+		// Recover the vector coefficient linked to the matrix coefficient, 
+		// if it's not defined, then we didn't compute it in the previous iteration
+		// then all the matrix coefficient in the corresponding column are 0
+		// So the vector coefficient should be (1 - dampingFactor) / numberOfNodes
+		if (vector.containsKey(Integer.parseInt(inputIndexSplit[0])))
+		{
+			coefficient.set(matrixCoefficient * vector.get(Integer.parseInt(inputIndexSplit[0])));	
+		}
+		else
+		{
+			coefficient.set(matrixCoefficient * (1 - dampingFactor)/numberOfNodes);
+		}
+
+		// Output
+		context.write(index, coefficient);
+    	}
 }
