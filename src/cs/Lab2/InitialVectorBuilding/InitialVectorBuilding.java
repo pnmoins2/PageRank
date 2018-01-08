@@ -42,7 +42,7 @@ public class InitialVectorBuilding extends Configured implements Tool {
 		// On précise le format des fichiers d'entrée et de sortie
 
 		job.setInputFormatClass(KeyValueTextInputFormat.class);
-			job.setOutputFormatClass(TextOutputFormat.class);
+		job.setOutputFormatClass(TextOutputFormat.class);
 
 		// On précise les classes MyProgram, Map et Reduce
 
