@@ -14,22 +14,22 @@ public class MatrixBuildingMapper extends Mapper<Text, Text, IntWritable, IntWri
 	// Output : (firstNode, secondNode) -- Remove the first lines
 	@Override
 	protected void map(Text keyE, Text valE, Context context) throws IOException,InterruptedException
-    {	
+    	{	
 		// Recover the first part
-        String key = keyE.toString();
-        
-        // If we are not in the description part
-        if (!key.contains("#"))
-        {
-        	// Recover the first node
-        	firstNode.set(Integer.parseInt(key));
-        	
-        	// Recover the second node
-        	String val = valE.toString();
-        	secondNode.set(Integer.parseInt(val));
-        	
-        	// Output
-        	context.write(firstNode, secondNode);
-        }
-    }
+		String key = keyE.toString();
+
+		// If we are not in the description part
+		if (!key.contains("#"))
+		{
+			// Recover the first node
+			firstNode.set(Integer.parseInt(key));
+
+			// Recover the second node
+			String val = valE.toString();
+			secondNode.set(Integer.parseInt(val));
+
+			// Output
+			context.write(firstNode, secondNode);
+		}
+    	}
 }
