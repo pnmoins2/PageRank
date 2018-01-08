@@ -23,79 +23,79 @@ public class PageRank extends Configured implements Tool {
 		this.conf = conf;
 	}
 	
-    public int run(String[] args) throws Exception {
-    	if (args.length != 2) {
+    	public int run(String[] args) throws Exception {
+		if (args.length != 2) {
 
-            System.out.println("Usage: [input] [output]");
+		    System.out.println("Usage: [input] [output]");
 
-            System.exit(-1);
+		    System.exit(-1);
 
-        }
-    	
-        // Création d'un job en lui fournissant la configuration et une description textuelle de la tâche
+		}
 
-        Job job = Job.getInstance(conf);
+		// Création d'un job en lui fournissant la configuration et une description textuelle de la tâche
 
-        job.setJobName("PageRank");
-        
-        // On précise le format des fichiers d'entrée et de sortie
-        
-        job.setInputFormatClass(KeyValueTextInputFormat.class);
-		job.setOutputFormatClass(TextOutputFormat.class);
+		Job job = Job.getInstance(conf);
 
-        // On précise les classes MyProgram, Map et Reduce
+		job.setJobName("PageRank");
 
-        job.setJarByClass(PageRank.class);
+		// On précise le format des fichiers d'entrée et de sortie
 
-        job.setMapperClass(PageRankMapper.class);
+		job.setInputFormatClass(KeyValueTextInputFormat.class);
+			job.setOutputFormatClass(TextOutputFormat.class);
 
-        job.setReducerClass(PageRankReducer.class);
+		// On précise les classes MyProgram, Map et Reduce
 
+		job.setJarByClass(PageRank.class);
 
-        // Définition des types clé/valeur de notre problème
+		job.setMapperClass(PageRankMapper.class);
 
-        job.setMapOutputKeyClass(IntWritable.class);
-
-        job.setMapOutputValueClass(FloatWritable.class);
+		job.setReducerClass(PageRankReducer.class);
 
 
-        job.setOutputKeyClass(IntWritable.class);
+		// Définition des types clé/valeur de notre problème
 
-        job.setOutputValueClass(FloatWritable.class);
+		job.setMapOutputKeyClass(IntWritable.class);
 
-        // Récupération du numéro de l'itération courante et de l'itération précédente
-        int currentIteration = job.getConfiguration().getInt("currentIteration", 1);
-        int previousIteration = currentIteration - 1;
-        
-        // Définition des fichiers d'entrée et de sorties (ici considérés comme des arguments à préciser lors de l'exécution)
-
-        Path inputMatrixPath = new Path(args[0]);
-    	FileInputFormat.addInputPath(job, inputMatrixPath);
-    	
-		Path inputVectorPath = new Path(args[1] + String.valueOf(previousIteration) + "/part-r-00000");
-		job.addCacheFile(inputVectorPath.toUri());
-		
-    	
-        Path outputFilePath = new Path(args[1] + String.valueOf(currentIteration));
-        FileOutputFormat.setOutputPath(job, outputFilePath);
+		job.setMapOutputValueClass(FloatWritable.class);
 
 
-        //Suppression du fichier de sortie s'il existe déjà
+		job.setOutputKeyClass(IntWritable.class);
 
-        FileSystem fs = FileSystem.newInstance(job.getConfiguration());
+		job.setOutputValueClass(FloatWritable.class);
 
-        if (fs.exists(outputFilePath)) {
-            fs.delete(outputFilePath, true);
-        }
+		// Récupération du numéro de l'itération courante et de l'itération précédente
+		int currentIteration = job.getConfiguration().getInt("currentIteration", 1);
+		int previousIteration = currentIteration - 1;
 
-        
-        return job.waitForCompletion(true) ? 0: 1;
+		// Définition des fichiers d'entrée et de sorties (ici considérés comme des arguments à préciser lors de l'exécution)
 
-    }
+		Path inputMatrixPath = new Path(args[0]);
+		FileInputFormat.addInputPath(job, inputMatrixPath);
+
+			Path inputVectorPath = new Path(args[1] + String.valueOf(previousIteration) + "/part-r-00000");
+			job.addCacheFile(inputVectorPath.toUri());
 
 
-    public static void main(String[] args) throws Exception {
-    	Configuration config = new Configuration();
+		Path outputFilePath = new Path(args[1] + String.valueOf(currentIteration));
+		FileOutputFormat.setOutputPath(job, outputFilePath);
+
+
+		//Suppression du fichier de sortie s'il existe déjà
+
+		FileSystem fs = FileSystem.newInstance(job.getConfiguration());
+
+		if (fs.exists(outputFilePath)) {
+		    fs.delete(outputFilePath, true);
+		}
+
+
+		return job.waitForCompletion(true) ? 0: 1;
+
+    	}
+
+
+    	public static void main(String[] args) throws Exception {
+    		Configuration config = new Configuration();
     	
 		config.setInt("numberOfNodes", 75879);
 		config.setInt("maxNodeNumber", 75887);
@@ -109,6 +109,6 @@ public class PageRank extends Configured implements Tool {
 			
 			ToolRunner.run(pageRankDriver, args);
 		}
-    }
+    	}
 
 }
