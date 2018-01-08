@@ -23,11 +23,11 @@ public class Conductor {
 	public static void main(String[] args) throws Exception {
 		if (args.length != 4) {
 
-            System.out.println("Usage: [input] [output] [numberOfIterations] [dampingFactor]");
+           		System.out.println("Usage: [input] [output] [numberOfIterations] [dampingFactor]");
 
-            System.exit(-1);
+            		System.exit(-1);
 
-        }
+        	}
 		
 		// Recover the dampingFactor
 		conf.setFloat("dampingFactor", Float.parseFloat(args[3]));
@@ -43,7 +43,7 @@ public class Conductor {
 		
 		// Intermediate step : Recover the number of nodes within the configuration
 		// Recover the vector Location
-		String vectorFile = "/user/cloudera/" + initialVectorBuildingArgs[1] + "/part-r-00000";
+		String vectorFile = initialVectorBuildingArgs[1] + "/part-r-00000";
 		Path vectorPath = new Path(vectorFile);
 		
 		// Open the file
@@ -103,7 +103,7 @@ public class Conductor {
 		
 		// Fifth Step : Display the first 20 values
 		// Recover the Output  Location
-		String outputFile = "/user/cloudera/" + sortArgs[1] + "/part-r-00000";
+		String outputFile = sortArgs[1] + "/part-r-00000";
 		Path outputPath = new Path(outputFile);
 		
 		// Open the file
