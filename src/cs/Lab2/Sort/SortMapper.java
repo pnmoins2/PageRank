@@ -6,18 +6,18 @@ import org.apache.hadoop.mapreduce.Mapper;
 import java.io.IOException;
 
 public class SortMapper extends Mapper<Text, Text, FloatWritable, Text> {
-	private FloatWritable minusTfIdf = new FloatWritable();
+	private FloatWritable minusPageRank = new FloatWritable();
 	
 	// Overriding of the map method
-	// Input : ([word, docId], tfIdf)
-	// Output : (-tfIdf, [word, docId])
+	// Input : (node, pageRank)
+	// Output : (-pageRank, node)
 	@Override
 	protected void map(Text keyE, Text valE, Context context) throws IOException,InterruptedException
     	{		
-		// Recover the tfIdf
-		float tfIdf = Float.parseFloat(valE.toString());
+		// Recover the pageRank
+		float pageRank = Float.parseFloat(valE.toString());
 		
-		minusTfIdf.set(-tfIdf);
-		context.write(minusTfIdf, keyE);
+		minusPageRank.set(-pageRank);
+		context.write(minusPageRank, keyE);
     	}
 }
