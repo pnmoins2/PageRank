@@ -72,8 +72,8 @@ public class PageRank extends Configured implements Tool {
 		Path inputMatrixPath = new Path(args[0]);
 		FileInputFormat.addInputPath(job, inputMatrixPath);
 
-			Path inputVectorPath = new Path(args[1] + String.valueOf(previousIteration) + "/part-r-00000");
-			job.addCacheFile(inputVectorPath.toUri());
+		Path inputVectorPath = new Path(args[1] + String.valueOf(previousIteration) + "/part-r-00000");
+		job.addCacheFile(inputVectorPath.toUri());
 
 
 		Path outputFilePath = new Path(args[1] + String.valueOf(currentIteration));
