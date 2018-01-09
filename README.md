@@ -8,3 +8,6 @@ Pour pouvoir exécuter le job global, il faut exporter ce projet en .jar puis re
 "hadoop jar /path/to/file.jar cs.Lab2.Conductor /path/to/soc-Epinions1.txt /path/to/outputFolder numberOfIterations dampingFactor"
 
 où les chemins sont en absolus
+
+Valentin GRASSET
+Paul WAMBERGUE
